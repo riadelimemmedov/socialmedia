@@ -1,0 +1,234 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">
+    <title>Posts</title>
+</head>
+
+
+<style>
+    body {
+        margin-top: 20px;
+    }
+
+    /*==================================================
+    Post Contents CSS
+    ==================================================*/
+
+    .post-content {
+        background: #f8f8f8;
+        border-radius: 4px;
+        width: 100%;
+        border: 1px solid #f1f2f2;
+        margin-bottom: 20px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .post-content img.post-image,
+    video.post-video,
+    .google-maps {
+        width: 100%;
+        height: auto;
+    }
+
+    .post-content .google-maps .map {
+        height: 300px;
+    }
+
+    .post-content .post-container {
+        padding: 20px;
+    }
+
+    .post-content .post-container .post-detail {
+        margin-left: 65px;
+        position: relative;
+    }
+
+    .post-content .post-container .post-detail .post-text {
+        line-height: 24px;
+        margin: 0;
+    }
+
+    .post-content .post-container .post-detail .reaction {
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+
+    .post-content .post-container .post-detail .post-comment {
+        display: inline-flex;
+        margin: 10px auto;
+        width: 100%;
+    }
+
+    .post-content .post-container .post-detail .post-comment img.profile-photo-sm {
+        margin-right: 10px;
+    }
+
+    .post-content .post-container .post-detail .post-comment .form-control {
+        height: 30px;
+        border: 1px solid #ccc;
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+        margin: 7px 0;
+        min-width: 0;
+    }
+
+    img.profile-photo-md {
+        height: 50px;
+        width: 50px;
+        border-radius: 50%;
+    }
+
+    img.profile-photo-sm {
+        height: 40px;
+        width: 40px;
+        border-radius: 50%;
+    }
+
+    .text-green {
+        color: #8dc63f;
+    }
+
+    .text-red {
+        color: #ef4136;
+    }
+
+    .following {
+        color: #8dc63f;
+        font-size: 12px;
+        margin-left: 20px;
+    }
+</style>
+
+
+<body>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="post-content">
+                    {% if post.resim %}
+                    <img src="{{post.resim.url}}" alt="post-image"
+                        class="img-responsive post-image">
+                    {% else %}
+                        <img src="{% static 'images/download.jpg' %}" alt="post-image"
+                        class="img-responsive post-image">
+                    {% endif %}
+                    <div class="post-container">
+                        <img src="{{post.author.avatar.url}}" alt="user"
+                            class="profile-photo-md pull-left">
+                        <div class="post-detail">
+                            <div class="user-info">
+
+                                <style>
+                                    #kanfet{
+                                        color:#130f40;
+
+                                    }
+                                </style>
+
+                                <h5><a href="timeline.html" class="profile-link" id="kanfet">{{post.author}}</a>
+                                    
+                                        <hr>
+                                <strong>Bu post <span class="text-muted">{{post.created_at|timesince}}</span> evvel paylasilib</strong>
+                                <button class="btn btn-dark" style="margin-left: 5px;">Comments -   {{comment_sayi}}</button>
+                                <hr>
+                            </div>
+                            <div class="line-divider"></div>
+                            <div class="post-text">
+                                <strong class="h3">{{post.title}}</strong>
+                                <hr>
+                                <p class="lead">{{post.content|safe}}<i class="em em-anguished"></i> <i
+                                        class="em em-anguished"></i> <i class="em em-anguished"></i></p>
+                            </div>
+                            <div class="line-divider"></div>
+                    
+
+                            <style>
+                                #top:focus{
+                                    border-color: #3867d6;
+                                    outline:none;
+                                }
+                                #top{
+                                    border-radius: 10px;
+                                    outline:none;
+                                }
+
+                                #mal{
+                                    color: #227093;
+                                    font-size: 20px;
+                                }
+                            </style>
+                            <hr>
+                            {% if comments %}
+                                {% for k in comments %}
+                                    <div class="post-comment">
+                                    {% if k.user.avatar %}
+                                        <img src="{{k.user.avatar.url}}" alt=""class="profile-photo-sm">
+                                    {% else %}
+                                        <img src="#" alt="">
+                                    {% endif %}
+                                    <br>
+                                    <p><a id="mal" href="timeline.html" class="profile-link">{{k.user}}-</a><i class="em em-laughing"></i>
+                                        {{k.body}}
+                                    </p>
+                                </div>
+                                {% endfor %}
+                            {% else %}
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>Bu postda yorum yoxdur ilk yorum yazan siz olun</strong>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div
+                            {% endif %}
+
+                            <div class="post-comment">
+                                <form method="POST" action="{% url 'comment' post.id %}">
+                                    {% csrf_token %}
+                                    <img style="float:left" src="{{istifadeci.avatar.url}}" alt=""
+                                        class="profile-photo-sm">
+                                    
+                                    <input type="hidden" name="isim" value="{{istifadeci}}">
+                                    <input type="text" class="form-control" name="comment_content" placeholder="Comment Yazin" style="width: 544px;margin-bottom: 12px;" id="top">
+                                    
+
+                                    <button type="submit" class="btn btn-success btn-sm mt-1">Comment</button>
+                                </form>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
+</script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+</script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+
+</script>
+<script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+
+</html>
+
+{% endblock content %}

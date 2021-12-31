@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %} 
+
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+
+            
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{message.tags}}">
+                        <strong>{{message}}</strong>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="card-title font-weight-bold text-center">Login</h4><!-- !h1-h6 araligi h6 ve h1 daxil olmagla birlikde hamsi block elemntlerdri yeni satiri kapliyirlar yadda saxla h1 ve h6 araligi hamisi block elementlerdir -->
+                </div>
+
+                <div class="card-body">
+                    <form action="{% url 'login' %}" method="POST">
+                        {% csrf_token %}
+                        
+                        <div class="form-group">
+                            <label for="username">Ad</label>
+                            <input type="text" name="username" class="form-control border" placeholder="Adiniz" required">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="password">Sifre</label><!-- labeldeki for un deyeri ile inputdaki name in deyeri hemise bir birine beraber olmalidir unutma bunu -->
+                            <input type="password" name="password" class="form-control border" placeholder="Sifre" required>
+                        </div>
+
+                        <style>
+                            #masin{
+                                font-size: 15px;
+                                color:#3742fa;
+                                text-decoration: underline;
+                                cursor: pointer;
+                            }
+
+                            #masin2{
+                                font-size: 15px;
+                                color: #3742fa;
+                                text-decoration: underline;
+                            }
+                            #kagiz::before{
+                                content: '';
+                                clear: both;
+                            }
+                        </style>
+
+                        <!-- ?eger form icinde button yazmisansa onun typini yeni butonun typini submit ele cunki data gondeirirk ve data gonderende html button type olarag submit teleb edir-->
+
+                            <button type="submit" class="btn btn-secondary btn-lg btn-block"><strong>Login</strong></button><!-- !Eger form icinde bir buton yazirsansa onun typeni mutleq submit ele cunki form bir deyer gonderir he html de butonun type ni submit olaraga teleb edir -->
+                        
+
+                        <style>
+                            #su{
+                                display: flex;
+                                justify-content: center;
+                            }
+
+                            #masin{
+                                color:#227093;
+                                font-size: normal;
+                            }
+
+                            #masin2{
+                                color: #227093;
+                                font-size: normal  ;
+                            }
+                        </style>
+
+                            <div class="container mx-auto">
+                                <div class="row mx-5 mt-4" id='su'>
+                                
+                                <div id="demir" class="col mx-3">
+                                    <strong id="rucka" class="d-block  mb-2">Hesabiniz Yoxdur?</strong><a href="{% url 'register' %}" id="masin" class="text-center">Qeydiyyatdan Kec</a>
+                                </div>
+
+                                <div id="demir2" class="col mx-3">
+                                    <strong id="rucka2" class="d-block mb-2" >Sifreni Yenile </strong><a href="{% url 'sifre_deyisdir' %}" id="masin2" class="text-center">Sifreni Yenile</a>
+
+                                </div>
+                            </div>
+
+        
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+
+    <!-- <div class="container">
+        <div class="col mt-2 col-md-6 mx-auto">
+            <div class="card">
+                <div class="mt-3">
+                    <div class="card-title">
+                        <p class="text-center font-weight-bold">Login</p>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        {{form|crispy}}
+                    </div>
+                </div>
+            </div>
+        </div>  
+    </div> -->
+{% endblock content %}

@@ -1,0 +1,1031 @@
+{% load custom_tags %}
+{% load static %}
+{% load humanize %}
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+<style>
+    body {
+        margin-top: 20px;
+        background: #eee;
+    }
+
+    .profile-header {
+        position: relative;
+        overflow: hidden
+    }
+
+    .profile-header .profile-header-cover {
+        background-image: url(https://bootdey.com/img/Content/bg1.jpg);
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0
+    }
+
+    .profile-header .profile-header-cover:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, .75) 100%)
+    }
+
+    .profile-header .profile-header-content {
+        color: #fff;
+        padding: 25px
+    }
+
+    .profile-header-img {
+        float: left;
+        width: 120px;
+        height: 120px;
+        overflow: hidden;
+        position: relative;
+        z-index: 10;
+        margin: 0 0 -20px;
+        padding: 3px;
+        border-radius: 4px;
+        background: #fff
+    }
+
+    .profile-header-img img {
+        max-width: 100%
+    }
+
+    .profile-header-info h4 {
+        font-weight: 500;
+        color: #fff
+    }
+
+    .profile-header-img+.profile-header-info {
+        margin-left: 140px
+    }
+
+    .profile-header .profile-header-content,
+    .profile-header .profile-header-tab {
+        position: relative
+    }
+
+    .b-minus-1,
+    .b-minus-10,
+    .b-minus-2,
+    .b-minus-3,
+    .b-minus-4,
+    .b-minus-5,
+    .b-minus-6,
+    .b-minus-7,
+    .b-minus-8,
+    .b-minus-9,
+    .b-plus-1,
+    .b-plus-10,
+    .b-plus-2,
+    .b-plus-3,
+    .b-plus-4,
+    .b-plus-5,
+    .b-plus-6,
+    .b-plus-7,
+    .b-plus-8,
+    .b-plus-9,
+    .l-minus-1,
+    .l-minus-2,
+    .l-minus-3,
+    .l-minus-4,
+    .l-minus-5,
+    .l-minus-6,
+    .l-minus-7,
+    .l-minus-8,
+    .l-minus-9,
+    .l-plus-1,
+    .l-plus-10,
+    .l-plus-2,
+    .l-plus-3,
+    .l-plus-4,
+    .l-plus-5,
+    .l-plus-6,
+    .l-plus-7,
+    .l-plus-8,
+    .l-plus-9,
+    .r-minus-1,
+    .r-minus-10,
+    .r-minus-2,
+    .r-minus-3,
+    .r-minus-4,
+    .r-minus-5,
+    .r-minus-6,
+    .r-minus-7,
+    .r-minus-8,
+    .r-minus-9,
+    .r-plus-1,
+    .r-plus-10,
+    .r-plus-2,
+    .r-plus-3,
+    .r-plus-4,
+    .r-plus-5,
+    .r-plus-6,
+    .r-plus-7,
+    .r-plus-8,
+    .r-plus-9,
+    .t-minus-1,
+    .t-minus-10,
+    .t-minus-2,
+    .t-minus-3,
+    .t-minus-4,
+    .t-minus-5,
+    .t-minus-6,
+    .t-minus-7,
+    .t-minus-8,
+    .t-minus-9,
+    .t-plus-1,
+    .t-plus-10,
+    .t-plus-2,
+    .t-plus-3,
+    .t-plus-4,
+    .t-plus-5,
+    .t-plus-6,
+    .t-plus-7,
+    .t-plus-8,
+    .t-plus-9 {
+        position: relative !important
+    }
+
+    .profile-header .profile-header-tab {
+        background: #fff;
+        list-style-type: none;
+        margin: -10px 0 0;
+        padding: 0 0 0 140px;
+        white-space: nowrap;
+        border-radius: 0
+    }
+
+    .text-ellipsis,
+    .text-nowrap {
+        white-space: nowrap !important
+    }
+
+    .profile-header .profile-header-tab>li {
+        display: inline-block;
+        margin: 0
+    }
+
+    .profile-header .profile-header-tab>li>a {
+        display: block;
+        color: #929ba1;
+        line-height: 20px;
+        padding: 10px 20px;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 12px;
+        border: none
+    }
+
+    .profile-header .profile-header-tab>li.active>a,
+    .profile-header .profile-header-tab>li>a.active {
+        color: #242a30
+    }
+
+    .profile-content {
+        padding: 25px;
+        border-radius: 4px
+    }
+
+    .profile-content:after,
+    .profile-content:before {
+        content: '';
+        display: table;
+        clear: both
+    }
+
+    .profile-content .tab-content,
+    .profile-content .tab-pane {
+        background: 0 0
+    }
+
+    .profile-left {
+        width: 200px;
+        float: left
+    }
+
+    .profile-right {
+        margin-left: 240px;
+        padding-right: 20px
+    }
+
+    .profile-image {
+        height: 175px;
+        line-height: 175px;
+        text-align: center;
+        font-size: 72px;
+        margin-bottom: 10px;
+        border: 2px solid #E2E7EB;
+        overflow: hidden;
+        border-radius: 4px
+    }
+
+    .profile-image img {
+        display: block;
+        max-width: 100%
+    }
+
+    .profile-highlight {
+        padding: 12px 15px;
+        background: #FEFDE1;
+        border-radius: 4px
+    }
+
+    .profile-highlight h4 {
+        margin: 0 0 7px;
+        font-size: 12px;
+        font-weight: 700
+    }
+
+    .table.table-profile>thead>tr>th {
+        border-bottom: none !important
+    }
+
+    .table.table-profile>thead>tr>th h4 {
+        font-size: 20px;
+        margin-top: 0
+    }
+
+    .table.table-profile>thead>tr>th h4 small {
+        display: block;
+        font-size: 12px;
+        font-weight: 400;
+        margin-top: 5px
+    }
+
+    .table.table-profile>tbody>tr>td,
+    .table.table-profile>thead>tr>th {
+        border: none;
+        padding-top: 7px;
+        padding-bottom: 7px;
+        color: #242a30;
+        background: 0 0
+    }
+
+    .table.table-profile>tbody>tr>td.field {
+        width: 20%;
+        text-align: right;
+        font-weight: 600;
+        color: #2d353c
+    }
+
+    .table.table-profile>tbody>tr.highlight>td {
+        border-top: 1px solid #b9c3ca;
+        border-bottom: 1px solid #b9c3ca
+    }
+
+    .table.table-profile>tbody>tr.divider>td {
+        padding: 0 !important;
+        height: 10px
+    }
+
+    .profile-section+.profile-section {
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid #b9c3ca
+    }
+
+    .profile-section:after,
+    .profile-section:before {
+        content: '';
+        display: table;
+        clear: both
+    }
+
+    .profile-section .title {
+        font-size: 20px;
+        margin: 0 0 15px
+    }
+
+    .profile-section .title small {
+        font-weight: 400
+    }
+
+    body.flat-black {
+        background: #E7E7E7
+    }
+
+    .flat-black .navbar.navbar-inverse {
+        background: #212121
+    }
+
+    .flat-black .navbar.navbar-inverse .navbar-form .form-control {
+        background: #4a4a4a;
+        border-color: #4a4a4a
+    }
+
+    .flat-black .sidebar,
+    .flat-black .sidebar-bg {
+        background: #3A3A3A
+    }
+
+    .flat-black .page-with-light-sidebar .sidebar,
+    .flat-black .page-with-light-sidebar .sidebar-bg {
+        background: #fff
+    }
+
+    .flat-black .sidebar .nav>li>a {
+        color: #b2b2b2
+    }
+
+    .flat-black .sidebar.sidebar-grid .nav>li>a {
+        border-bottom: 1px solid #474747;
+        border-top: 1px solid #474747
+    }
+
+    .flat-black .sidebar .active .sub-menu>li.active>a,
+    .flat-black .sidebar .nav>li.active>a,
+    .flat-black .sidebar .nav>li>a:focus,
+    .flat-black .sidebar .nav>li>a:hover,
+    .flat-black .sidebar .sub-menu>li>a:focus,
+    .flat-black .sidebar .sub-menu>li>a:hover,
+    .sidebar .nav>li.nav-profile>a {
+        color: #fff
+    }
+
+    .flat-black .sidebar .sub-menu>li>a,
+    .flat-black .sidebar .sub-menu>li>a:before {
+        color: #999
+    }
+
+    .flat-black .page-with-light-sidebar .sidebar .active .sub-menu>li.active>a,
+    .flat-black .page-with-light-sidebar .sidebar .active .sub-menu>li.active>a:focus,
+    .flat-black .page-with-light-sidebar .sidebar .active .sub-menu>li.active>a:hover,
+    .flat-black .page-with-light-sidebar .sidebar .nav>li.active>a,
+    .flat-black .page-with-light-sidebar .sidebar .nav>li.active>a:focus,
+    .flat-black .page-with-light-sidebar .sidebar .nav>li.active>a:hover {
+        color: #000
+    }
+
+    .flat-black .page-sidebar-minified .sidebar .nav>li.has-sub:focus>a,
+    .flat-black .page-sidebar-minified .sidebar .nav>li.has-sub:hover>a {
+        background: #323232
+    }
+
+    .flat-black .page-sidebar-minified .sidebar .nav li.has-sub>.sub-menu,
+    .flat-black .sidebar .nav>li.active>a,
+    .flat-black .sidebar .nav>li.active>a:focus,
+    .flat-black .sidebar .nav>li.active>a:hover,
+    .flat-black .sidebar .nav>li.nav-profile,
+    .flat-black .sidebar .sub-menu>li.has-sub>a:before,
+    .flat-black .sidebar .sub-menu>li:before,
+    .flat-black .sidebar .sub-menu>li>a:after {
+        background: #2A2A2A
+    }
+
+    .flat-black .page-sidebar-minified .sidebar .sub-menu>li:before,
+    .flat-black .page-sidebar-minified .sidebar .sub-menu>li>a:after {
+        background: #3e3e3e
+    }
+
+    .flat-black .sidebar .nav>li.nav-profile .cover.with-shadow:before {
+        background: rgba(42, 42, 42, .75)
+    }
+
+    .bg-white {
+        background-color: #fff !important;
+    }
+
+    .p-10 {
+        padding: 10px !important;
+    }
+
+    .media.media-xs .media-object {
+        width: 32px;
+    }
+
+    .m-b-2 {
+        margin-bottom: 2px !important;
+    }
+
+    .media>.media-left,
+    .media>.pull-left {
+        padding-right: 15px;
+    }
+
+    .media-body,
+    .media-left,
+    .media-right {
+        display: table-cell;
+        vertical-align: top;
+    }
+
+    select.form-control:not([size]):not([multiple]) {
+        height: 34px;
+    }
+
+    .form-control.input-inline {
+        display: inline;
+        width: auto;
+        padding: 0 7px;
+    }
+
+
+    .timeline {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        position: relative
+    }
+
+    .timeline:before {
+        content: '';
+        position: absolute;
+        top: 5px;
+        bottom: 5px;
+        width: 5px;
+        background: #2d353c;
+        left: 20%;
+        margin-left: -2.5px
+    }
+
+    .timeline>li {
+        position: relative;
+        min-height: 50px;
+        padding: 20px 0
+    }
+
+    .timeline .timeline-time {
+        position: absolute;
+        left: 0;
+        width: 18%;
+        text-align: right;
+        top: 30px
+    }
+
+    .timeline .timeline-time .date,
+    .timeline .timeline-time .time {
+        display: block;
+        font-weight: 600
+    }
+
+    .timeline .timeline-time .date {
+        line-height: 16px;
+        font-size: 12px
+    }
+
+    .timeline .timeline-time .time {
+        line-height: 24px;
+        font-size: 20px;
+        color: #242a30
+    }
+
+    .timeline .timeline-icon {
+        left: 15%;
+        position: absolute;
+        width: 10%;
+        text-align: center;
+        top: 40px
+    }
+
+    .timeline .timeline-icon a {
+        text-decoration: none;
+        width: 20px;
+        height: 20px;
+        display: inline-block;
+        border-radius: 20px;
+        background: #d9e0e7;
+        line-height: 10px;
+        color: #fff;
+        font-size: 14px;
+        border: 5px solid #2d353c;
+        transition: border-color .2s linear
+    }
+
+    .timeline .timeline-body {
+        margin-left: 23%;
+        margin-right: 17%;
+        background: #fff;
+        position: relative;
+        padding: 20px 25px;
+        border-radius: 6px
+    }
+
+    .timeline .timeline-body:before {
+        content: '';
+        display: block;
+        position: absolute;
+        border: 10px solid transparent;
+        border-right-color: #fff;
+        left: -20px;
+        top: 20px
+    }
+
+    .timeline .timeline-body>div+div {
+        margin-top: 15px
+    }
+
+    .timeline .timeline-body>div+div:last-child {
+        margin-bottom: -20px;
+        padding-bottom: 20px;
+        border-radius: 0 0 6px 6px
+    }
+
+    .timeline-header {
+        padding-bottom: 10px;
+        border-bottom: 1px solid #e2e7eb;
+        line-height: 30px
+    }
+
+    .timeline-header .userimage {
+        float: left;
+        width: 34px;
+        height: 34px;
+        border-radius: 40px;
+        overflow: hidden;
+        margin: -2px 10px -2px 0
+    }
+
+    .timeline-header .username {
+        font-size: 16px;
+        font-weight: 600
+    }
+
+    .timeline-header .username,
+    .timeline-header .username a {
+        color: #2d353c
+    }
+
+    .timeline img {
+        max-width: 100%;
+        display: block
+    }
+
+    .timeline-content {
+        letter-spacing: .25px;
+        line-height: 18px;
+        font-size: 13px
+    }
+
+    .timeline-content:after,
+    .timeline-content:before {
+        content: '';
+        display: table;
+        clear: both
+    }
+
+    .timeline-title {
+        margin-top: 0
+    }
+
+    .timeline-footer {
+        background: #fff;
+        border-top: 1px solid #e2e7ec;
+        padding-top: 15px
+    }
+
+    .timeline-footer a:not(.btn) {
+        color: #575d63
+    }
+
+    .timeline-footer a:not(.btn):focus,
+    .timeline-footer a:not(.btn):hover {
+        color: #2d353c
+    }
+
+    .timeline-likes {
+        color: #6d767f;
+        font-weight: 600;
+        font-size: 12px
+    }
+
+    .timeline-likes .stats-right {
+        float: right
+    }
+
+    .timeline-likes .stats-total {
+        display: inline-block;
+        line-height: 20px
+    }
+
+    .timeline-likes .stats-icon {
+        float: left;
+        margin-right: 5px;
+        font-size: 9px
+    }
+
+    .timeline-likes .stats-icon+.stats-icon {
+        margin-left: -2px
+    }
+
+    .timeline-likes .stats-text {
+        line-height: 20px
+    }
+
+    .timeline-likes .stats-text+.stats-text {
+        margin-left: 15px
+    }
+
+    .timeline-comment-box {
+        background: #f2f3f4;
+        margin-left: -25px;
+        margin-right: -25px;
+        padding: 20px 25px
+    }
+
+    .timeline-comment-box .user {
+        float: left;
+        width: 34px;
+        height: 34px;
+        overflow: hidden;
+        border-radius: 30px
+    }
+
+    .timeline-comment-box .user img {
+        max-width: 100%;
+        max-height: 100%
+    }
+
+    .timeline-comment-box .user+.input {
+        margin-left: 44px
+    }
+
+    .lead {
+        margin-bottom: 20px;
+        font-size: 21px;
+        font-weight: 300;
+        line-height: 1.4;
+    }
+
+    .text-danger,
+    .text-red {
+        color: #ff5b57 !important;
+    }
+</style>
+
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <!--Custom css ADD HERE-->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css">
+
+    <!-- semantic UI -->
+    <link rel="stylesheet" type='text/css'
+        href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.14/semantic.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
+
+</head>
+
+<body>
+    {% include "main/navbar.html" %}
+    <br>
+    <div class="ui container">
+        {% block content %}
+        {% endblock content %}
+    </div>
+
+    {% block scripts %}<!-- Ajax yazilacag deyesen ona gore -->
+    {% endblock scripts %}
+
+    
+
+</body>
+
+<!--Custom js ADD HERE-->
+
+
+</html>
+
+<div class="container">
+    
+    <div class="row">
+        <div class="col-md-10" style="float: left;margin-left: -150px;width: 10000;">
+            <div>
+                <!-- begin profile -->
+
+                <!-- end profile -->
+                <!-- begin profile-content -->
+                <div class="profile-content">
+                    <!-- begin tab-content -->
+                    <div class="tab-content p-0">
+                        <!-- begin #profile-post tab -->
+                        <div class="tab-pane fade active show" id="profile-post">
+                            <!-- begin timeline -->
+                            <ul class="timeline">
+                                {% for obj in qs %}
+                                <li>
+                                    <!-- begin timeline-time -->
+                                    <div class="timeline-time">
+                                        <span class="time">{{obj.created_at|date:"F d,Y"}}</span>
+                                    </div>
+                                    <!-- end timeline-time -->
+                                    <!-- begin timeline-icon -->
+                                    <div class="timeline-icon">
+                                        <a href="javascript:;">&nbsp;</a>
+                                    </div>
+                                    <!-- end timeline-icon -->
+                                    <!-- begin timeline-body -->
+                                    <div class="timeline-body">
+                                        <div class="timeline-header">
+                                            <span class="userimage"><img
+                                                    src="{{obj.author.avatar.url}}"
+                                                    alt=""></span>
+
+                                            <a href="{% url 'profile_detail' pk=obj.author.id  %}"><span class="username">{{obj.author}}</span></a>
+                                                {% if request.user  ==  obj.author.user %}<!-- !her iki terefin yeni hem request.user in hemde obj.author.user gelen user da her iki terefde user ozelliyi yazilmalidir user olmasa usernameye gore tanimir django diqqtli ol request.user == obj.author.user buda bize true verir cunki usere gore yoxladig her iki teref userdir -->
+                                                    <div style="display: inline-block">
+                                                        <a href="{% url 'update' obj.id %}"><button class="btn btn-secondary" style="margin-left:277px;">Guncelle</button></a>
+                                                    </div>
+
+                                                    <div style="display: inline-block">
+                                                        <a href="{% url 'delete' obj.id %}"><button class="btn btn-danger">Sil</button></a>
+                                                    </div>
+                                                {% endif %}
+                                        </div>
+
+                                        <style>
+
+                                            #ptagi{
+                                                transition: background-color,margin-top,padding, 0.5s;
+                                            }
+
+                                            #ptagi:hover{
+                                                background-color: #d1d8e0;
+                                                margin-top: 5px;
+                                                padding-left: 10px;
+
+                                            }
+
+                                            #kagiz{
+                                                color: black;
+                                                text-decoration: none;
+                                            }
+                                        </style>
+
+                                        <div class="timeline-content" id="ptagi">
+                                            <a href="{% url 'detail' obj.id %}" class="text-capitalize" id="kagiz"><p>{{obj.content|safe|truncatechars:300}}</p></a><!-- text-capitalize vasitesile sozun baslangic herfi boyuk olur -->
+                                        </div>
+                                        <div class="timeline-footer">
+                                            <form action="{% url 'liked-post-view' %}" method="POST" class="like-form" id="{{obj.id}}"><!-- formlarda buton ele formun ozune baglidir -->
+                                                {% csrf_token %}
+                                                <input type="hidden" name="post_id" value="{{obj.id}}">
+                                                
+                                                <style>
+                                                    .sekiller{
+                                                        color: black;
+                                                        text-decoration: none;
+                                                    
+                                                    }
+
+                                                    #koment{
+                                                        transition: text-decoration 0.3s;
+                                                    }
+
+                                                    #koment:hover{
+                                                        text-decoration: underline;
+                                                    }
+                                                </style>
+
+                                                <button class="btn btn-primary like-btn{{obj.id}}" type="submit">
+                                                    {% if profile not in obj.liked.all %} <!--Yeni eger istfiadeci like etmeyise sekili if girsin -->
+                                                    <a href="javascript:;" class="m-r-15 text-inverse-lighter " style="color:#fff;text-decoration: none;" id="amk"><i
+                                                        class="fa fa-thumbs-up fa-fw fa-lg m-r-3 sekiller"></i> Like</a>
+                                
+
+                                                    {% else %}<!--Ve like basanda uke avtomatik like edir ve o istifadeci postu like eden siyahiya dusur ve else girir-->
+                                                    <a href="javascript:;" class="m-r-15 text-inverse-lighter "  style="color:#fff;text-decoration: none;" id="amk1">
+                                                        <i class="fa fa-thumbs-down fa-fw fa-lg m-r-3 sekiller"></i> 
+                                                        Unlike
+                                                    </a>
+                                                    <span class="koment">{{giris_eden_istifadeci_yorumu}}</span>
+                                                    {% endif %}
+                                                </button> 
+                                            
+
+                                                <!-- <button type="submit" class="ui button like-btn{{obj.id}}">
+                                                        {% if profile not in obj.liked.all %}
+                                                            Like
+                                                        {% else %}
+                                                            Unlike
+                                                        {% endif %}
+                                                </button> -->
+
+                                                <div class="ml-auto card mt-3 border-dark">
+                                                    <div class="row" style="position: relative;bottom: 25;padding-left: 15px;">
+                                                        <div class="like-count{{obj.id}}" style="padding-left: 120px;">
+                                                            <span class="card-title">Likes</span>
+                                                        </div>
+                                                        <div class="column" style="padding-left: 120px;">
+                                                            <strong>{{obj.liked.all.count}}</strong>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <style>
+                                                    #masinlar{
+                                                        border: 3px solid transparent;
+                                                        background-color: #a5b1c2;
+                                                        padding: 3.5px;
+                                                        border-radius: 3px;
+                                                        margin-top: 1px !important;
+                                                        display: inline-block;
+                                                        outline: none;
+                                                        text-align: center !important;
+                                                    }
+
+                                                </style>
+                                                <br>
+                                            <div style="padding-left: 100px;position: relative;bottom: 85px; left: 200px;">
+                                            <a href="javascript:;" class="m-r-15 text-inverse-lighter" id="koment" ><em
+                                                    class="fa fa-comments fa-fw fa-lg m-r-3 sekiller koment" "></em> Comment</a> <strong class="lead pl-2 pt-1">{{obj.koment_sayi}}</strong>
+                                            </div>
+                                        </form>
+                                        </div>  
+                                    </div>
+                                    <!-- end timeline-body -->
+                                </li>
+                                {% endfor %}
+                            </ul>
+
+
+                            <!-- end timeline -->
+                        </div>
+                        <!-- end #profile-post tab -->
+                    </div>
+                    <!-- end tab-content -->
+                </div>
+                <!-- end profile-content -->
+            </div>
+
+        <style>
+            #marker{
+                color: #212121;
+                border: 1px solid grey;
+                border-radius: 3px;
+                padding: 5px;
+                margin-left: 5px;
+                margin-bottom: 5px !important;
+                transition: background-color 0.3s;
+            }
+
+            #marker:hover{
+                background-color: #2d3436;
+                color: #fff;
+            }
+
+            
+        </style>
+
+        </div>
+
+        <div class="col md-3">
+            <form method="POST" enctype="multipart/form-data" id="su">
+                {% csrf_token %}
+                {{form|crispy}}
+                {{form.media}}
+                
+                <button style="border: 1px solid;" style="margin-bottom: 10px;" type="submit" class="btn btn-light"><strong>Paylas</strong></button><a href="{% url 'create_post' %}" id="marker">Ve ya etrafli bir post yarat</a>
+                <hr>
+            </form>
+
+            <style>
+                #rucka{
+                    background-color:#2D3436 !important;
+                    text-align: center;
+                    margin-bottom: 14px;
+                    padding: 5px;
+                    color: #fff;
+                }
+
+                #tarix{
+                    transition: transform 0.3s;
+                    transition: background-color 1 !important
+                }
+
+                #tarix:hover {
+                    transform: translateY(-10px);
+                    background-color: #838389;
+                    color: #0303F7 !important;
+                }
+
+                #telefon:hover {
+                    color: black !important;
+            
+                }
+
+            </style>
+            {% categories_all as kategoriyalar %}
+                <ul class="list-group">
+                    <strong id="rucka">Kategoriyalar</strong>
+                    {% for category in kategoriyalar %}
+                    <li id="tarix" class="list-group-item d-flex justify-content-between align-items-center">
+                        <a id="telefon" href="{% url 'category' category.slug %}" style="color:black">{{category.title}}</a>
+                        <span class="badge badge-primary badge-pill">{{category.category_count}}</span>
+                    </li>
+                </ul>
+            {% endfor %}
+            
+
+            {% tags_all as tags %}<!--Custom tagsdan gelen tagin adini deyiskemk ucun istifade olunur as yazmayada bilerik amma her ehtimal adi deyisib sonra for for a girek-->
+            <ul class="list-group">
+                <br>
+                <strong id="rucka" style="background-color: #2d3436;color: #fff;">Etiketler</strong>
+                {% for tag in tags %}
+                <li id="tarix" class="list-group-item d-flex justify-content-between align-items-center">
+                    <a id="telefon" href="{% url 'tag' tag.slug %}" style="color:black">#{{tag.title}}</a>
+                    <span class="badge badge-primary badge-pill">{{tag.tag_sayi}}</span>
+                </li>
+                
+                {% endfor %}
+            </ul>
+        </div>
+
+
+</div>
+
+<style>
+    .backtotop{
+        position: fixed;
+        bottom: 20px;
+        right: 30px;
+    }
+</style>
+
+<footer class="text-muted">
+    <div class="container">
+        <p class="float-right"><!-- bootstrapdeki float-right,float-left,float-none classi lari vasitesile css deki float ozelliyini evez ede bilersen sadece elmek lazim olar class yaib icine float acar sozu sonra ise ingilisce sag sol ve ya oldugu kmim qalmasini qeyd etmek lazimdir yeni left,right,none -->
+            <a href="#" class=" backtotop btn btn-primary">Basa Qayit</a>
+        </p>
+    </div>
+</footer>
+
+
+
+<script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
+</script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+</script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+
+
+<script>
+    $(document).ready(function() {
+        $(window).scroll(function(){//yeni window pencere objem scrool olnada adagi bir funksiya islesin yeni nese bir seyler olsun
+            if($(window).scrollTop() > 450){//yeni yuxaridan 1000px li kecibse scroolbar secilen buton fadeIn olsun yeni gorunen olsun
+                $('.backtotop').fadeIn();//fadeIn gorunen,yeni scroolun px deyeri 100px i kecibse butonu goster
+            }//burda $ ile secende jqueyde window osel bir js ozelliyi oldugu ucun onu string icinde yazma hec vaxt yadindan cixmasin a yazma string icinde 
+            else{
+                $('.backtotop').fadeOut();//fadeOut gorunmez//eger 100px kecmeyibse butonu gosterme
+            }
+            //console.log($(this).scrollTop())//yeni yuxaridan asagi cekdikde olan px derecesini sayir
+        })
+    
+    })
+
+//Diqqet olunmasi gerekenlerden biride jqueryde scroll ile scrollTop ozellikleri ferqli isleri gorurler
+//scrool ozelliyi scrool olanda bas veren ozelliklerdir
+//scroolTop ozelliyi ise px deyeri esasen if else istifade olunur nece px scrooldan sonra bas veren hadiseleri nezere alir
+
+    $(document).ready(function(){
+        $('.backtotop').click(function(){
+            $('html,body').animate({scrollTop:0},700)//yeni butona basanda en basa ceksin animasiya formasindaki scrooTopunu
+            return false;//burda bunun yazilmasindaki sebeb button ozelliyi melumat gondemrek ucun istifade olunur biz ise link formasinda istifade ettiyimiz ucun disable etdik bu ozelliyi return false yazilis ile
+        })
+    })
+
+
+
+
+
+    //Form islemleri ucun yazilan Jqury kodlari
+
+
+</script>
+</body>
+</html>

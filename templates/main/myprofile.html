@@ -1,0 +1,411 @@
+{% extends "base.html" %}
+
+{% load static %}
+<!-- {% load custom_tags %} -->
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">
+
+    <title>FaceX- MyProfile</title>
+    <!-- Burda title tagi yazilmasindaki sebeb onsuz base htmldan miras alirig ve orada yazilib title tagi yazilmasindaki-->
+</head>
+
+<body>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            margin-top: 20px;
+        }
+
+        .alert {
+            border-radius: 0;
+            -webkit-border-radius: 0;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.11);
+            display: table;
+            width: 100%;
+        }
+
+        .alert-white {
+            background-image: linear-gradient(to bottom, #fff, #f9f9f9);
+            border-top-color: #d8d8d8;
+            border-bottom-color: #bdbdbd;
+            border-left-color: #cacaca;
+            border-right-color: #cacaca;
+            color: #404040;
+            padding-left: 61px;
+            position: relative;
+        }
+
+        .alert-white.rounded {
+            border-radius: 3px;
+            -webkit-border-radius: 3px;
+        }
+
+        .alert-white.rounded .icon {
+            border-radius: 3px 0 0 3px;
+            -webkit-border-radius: 3px 0 0 3px;
+        }
+
+        .alert-white .icon {
+            text-align: center;
+            width: 45px;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            border: 1px solid #bdbdbd;
+            padding-top: 15px;
+        }
+
+
+        .alert-white .icon:after {
+            -webkit-transform: rotate(45deg);
+            -moz-transform: rotate(45deg);
+            -ms-transform: rotate(45deg);
+            -o-transform: rotate(45deg);
+            transform: rotate(45deg);
+            display: block;
+            content: '';
+            width: 10px;
+            height: 10px;
+            border: 1px solid #bdbdbd;
+            position: absolute;
+            border-left: 0;
+            border-bottom: 0;
+            top: 50%;
+            right: -6px;
+            margin-top: -3px;
+            background: #fff;
+        }
+
+        .alert-white .icon i {
+            font-size: 20px;
+            color: #fff;
+            left: 12px;
+            margin-top: -10px;
+            position: absolute;
+            top: 50%;
+        }
+
+        /*============ colors ========*/
+        .alert-success {
+            color: #3c763d;
+            background-color: #dff0d8;
+            border-color: #d6e9c6;
+        }
+
+        .alert-white.alert-success .icon,
+        .alert-white.alert-success .icon:after {
+            border-color: #54a754;
+            background: #60c060;
+        }
+
+        .alert-info {
+            background-color: #d9edf7;
+            border-color: #98cce6;
+            color: #3a87ad;
+        }
+
+        .alert-white.alert-info .icon,
+        .alert-white.alert-info .icon:after {
+            border-color: #3a8ace;
+            background: #4d90fd;
+        }
+
+
+        .alert-white.alert-warning .icon,
+        .alert-white.alert-warning .icon:after {
+            border-color: #d68000;
+            background: #fc9700;
+        }
+
+        .alert-warning {
+            background-color: #fcf8e3;
+            border-color: #f1daab;
+            color: #c09853;
+        }
+
+        .alert-danger {
+            background-color: #f2dede;
+            border-color: #e0b1b8;
+            color: #b94a48;
+        }
+
+        .alert-white.alert-danger .icon,
+        .alert-white.alert-danger .icon:after {
+            border-color: #ca452e;
+            background: #da4932;
+        }
+    </style>
+
+
+    {% if messages %}
+    <!-- Eger mesaj varsa if e gir -->
+    {% for message in messages %}
+    <div class="container bootstrap snippets bootdey" >
+        <div class="alert alert-{{message.tags}} alert-white rounded fade show" id="animasiyadiv">
+            <button type="button" id="update_butonu" data-dismiss="alert" aria-hidden="true" class="close">×</button>
+            <div class="icon">
+                <i class="fa fa-check"></i>
+            </div>
+            <strong>Tamalandi!</strong>
+            {{message}}
+        </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+        <script>
+            $(document).ready(function(){/* jquery fayllarini yuklenmesi ucun */
+                $('#update_butonu').click(function(){
+                    $('#animasiyadiv').fadeOut()
+                })
+                return false
+            })
+        </script>
+
+        <br>
+        <!-- <div class="card" style="width: 24.5rem;">
+
+        <img class="card-img-top" src="{{my_account.avatar.url}}" alt="Card image cap">
+        <hr>
+        <div class="card-body">
+            <i>Friends</i><a  style="color:#686de0;" href="{% url 'friend'  %}" target="_blank" class="card-link"><i class="fas fa-user-friends fa-lg"></i></a>
+            <hr>
+            <p class="card-text">{{my_account.bio}}</p> 
+        </div>  
+
+
+        <ul class="list-group list-group-flush">
+            <b class="list-group-item">{{my_account.first_name}}</b>
+            <b class="list-group-item">{{my_account.last_name}}</b>
+            <b class="list-group-item">{{my_account.country}}</b>
+            <b class="list-group-item">Post-Count {{my_post_count}}</b>
+            <b class="list-group-item">All Like {{my_account.likes_count}} </b>
+            <b class="list-group-item">Aldiginiz Likelar {{my_account.get_likes_recived}}</b>
+        </ul>
+        <div class="card-body">
+            <a href="{{my_account.facebook_hesabi}}" target="_blank" class="card-link"><i class="fab fa-facebook fa-lg"></i></a>
+            <a href="{{my_account.twitter_hesabi}}" target="_blank" class="card-link"><i class="fab fa-twitter fa-lg"></i></a>
+            <a href="{{my_account.linkedin_hesabi}}" target="_blank" class="card-link"><i class="fab fa-linkedin fa-lg"></i></a>  
+            <a href="{{my_account.instaqram_hesabi}}" target="_blank" class="card-link"><i class="fab fa-instagram fa-lg"></i></a>
+        </div>
+    </div> -->
+    <style >
+    </style>
+
+        <div class="section about-section gray-bg" id="about">
+            <div class="container">
+                <div class="row align-items-center flex-row-reverse">
+                
+                    <div class="col-lg-6">
+                        <div class="about-text go-to">   
+                            <h3 class="dark-color">Hakkimda - {{my_account.user.username}}</h3>
+                            <hr>
+                            <p>Tehsil Aldigim Yer <mark>-  {{my_account.oxudugu_yer}}</mark>, {{my_account.bio|safe}}</p>
+                            <div class="row about-list" style="border: 2px solid #273c75; border-radius: 10px">
+                                <div class="col-md-6">
+                                    <div class="media">
+                                        <label>Dogum Ili</label>
+                                        <span style="padding-left: 5px;">- {{my_account.doguldugu_il}}</span>
+                                    </div>
+                                    <div class="media">
+                                        <label>Yas</label>
+                                        <span style="padding-left: 5px;">- {{my_account.yas}}</span>
+                                    </div>
+                                    <div class="media">
+                                        <label>Yasadigi Seher</label>
+                                        <span style="padding-left: 5px;">- {{my_account.yasadigi_yer}}</span>
+                                    </div>
+                                    <div class="media">
+                                        <label>Yasadigi Olke</label>
+                                        <span style="padding-left: 5px;">- {{my_account.country}}</span>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="media">
+                                        <label>Adi</label>
+                                        <span style="padding-left: 5px;">- {{my_account.first_name}}</span>
+                                    </div>
+                                    <div class="media">
+                                        <label>Soyad</label>
+                                        <span style="padding-left: 5px;">- {{my_account.last_name}}</span>
+                                    </div>
+                                    {% if my_account.ixtisas %}
+                                    <!-- Eger ixtisasa varsa if e girsn yoxdursa hecne else girsin -->
+                                    <div class="media">
+                                        <label>Ixtisas</label>
+                                        <span style="padding-left: 5px">-{{my_account.ixtisas}}</span>
+                                    </div>
+                                    {% else %}
+                                    <div class="media">
+                                        <label>Ixtisas</label>
+                                        <span style="padding-left:5px">-</span>
+                                    </div>
+                                    {% endif %}
+
+
+                                    {% if my_account.islediyi_yer %}
+                                    <div class="media">
+                                        <label>Islediyi Yer</label>
+                                        <span style="padding-left: 5px;">- {{my_account.islediyi_yer}}</span>
+                                    </div>
+                                    {% else %}
+                                    <div class="media">
+                                        <label>Islediyi Yer</label>
+                                        <span style="padding-left: 5px;">-</span>
+                                    </div>
+                                    {% endif %}
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                        <style>
+                            .su {
+                                margin-top: 10px;
+                                margin-right: 40px;
+                                width: 100px;
+                            }
+
+                            .iconlar {
+                                padding-left: 5px;
+                                transition: transform 250ms;
+                                /* Yeniki transiton ozelliyini transforma verirsen */
+                            }
+
+                            .iconlar:hover {
+                                transform: translateY('-30px');
+
+                            }
+                        </style>
+
+                        <span class="su">
+                            <br>
+                            <a class="iconlar" href="{{my_account.facebook_hesabi}}" target="_blank"
+                                class="card-link"><i class="fab fa-facebook fa-lg"></i></a>
+                            <a class="iconlar" href="{{my_account.twitter_hesabi}}" target="_blank" class="card-link"><i
+                                    class="fab fa-twitter fa-lg"></i></a>
+                            <a class="iconlar" href="{{my_account.linkedin_hesabi}}" target="_blank"
+                                class="card-link"><i class="fab fa-linkedin fa-lg"></i></a>
+                            <a class="iconlar" href="{{my_account.instaqram_hesabi}}" target="_blank"
+                                class="card-link"><i class="fab fa-instagram fa-lg"></i></a>
+                                <hr>
+
+
+                            <div class="container">
+                            <div>
+                                <span class="font-weight-bold"><strong>Profilinde Deyisiklikler Et</strong></span><a href="{% url 'update-profile' %}" style="margin-right: 100px;display: inline-block;" class=" btn btn-secondary my-3 ml-3">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+
+                            </div>
+
+                            <div>
+                                <span class="font-weight-bold"><strong>Sifre Deyismek</strong></span><a href="{% url 'sifre_deyisdir' %}" style="margin-right:100px;display:inline-block" class="btn btn-secondary my-3 ml-3">
+                                    <i class="fas fa-key"></i>
+                                </a>
+                            </div>
+
+                            <div>
+                                <span class="font-weight-bold"><strong>Admin Ile Elaqe</strong>
+                                    <a href="{% url 'contact_profile' %}" style="margin-right: 100px;display: inline-block;" class="btn btn-secondary my-3 ml-3">
+                                        <i class="fas fa-user"></i>
+                                    </a>
+                                </span>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="about-avatar">
+                            <img style="width: 300px;" src="{{my_account.avatar.url}}" title="" alt="">
+                        </div>
+                    </div>
+                </div>
+
+                <style>
+                    .telefon {
+                        border: 1px solid transparent;
+                        outline: none;
+                        border-radius: 5px;
+                        transition: background-color 0.3s;
+                    }
+
+                    .telefon:hover {
+                        background-color: #c8d6e5;
+                    }
+                </style>
+
+                <div class="counter">
+                    <br>
+                    <div class="row">
+                        <div class="col-6 col-lg-3 telefon">
+                            <div class="count-data text-center">
+                                <h6 class="count h2" data-to="500" data-speed="500">{{my_post_count}}</h6>
+                                <p class="m-0px font-w-600">Post Sayi</p>
+                            </div>
+                        </div>
+                        <div class="col-6 col-lg-3 telefon">
+                            <div class="count-data text-center">
+                                <h6 class="count h2" data-to="150" data-speed="150">{{my_account.likes_count}}</h6>
+                                <p class="m-0px font-w-600">Beyendiyi Post Sayi</p>
+                            </div>
+                        </div>
+                        <div class="col-6 col-lg-3 telefon">
+                            <div class="count-data text-center">
+                                <h6 class="count h2" data-to="850" data-speed="850">{{my_account.get_likes_recived}}
+                                </h6>
+                                <p class="m-0px font-w-600">Aldigi Like sayi <b
+                                        style="text-decoration: underline;">(umumi)</b></p>
+                            </div>
+                        </div>
+                        <div class="col-6 col-lg-3 telefon">
+                            <a href="{% url 'friend' %}" style="text-decoration: none;color: black;">
+                            <div class="count-data text-center">
+                                <h6 class="count h2" data-to="190" data-speed="190">{{my_account.get_friends_number}}
+                                </h6>
+                                <!-- !Burda my_acccount yazmagimdaki sebeb yeni menim giris etiy8im hesabin yalniz doslarini gostersin databasede olan butun dost sayini gostermesin  -->
+                                <p class="m-0px font-w-600">Dostlarin Sayi</p>
+                            </div>
+                        </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+</body>
+
+<footer>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
+    </script>
+    <script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+</footer>
+
+</html>
+
+{% endblock content %}

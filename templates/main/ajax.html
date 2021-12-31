@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="#">
+        
+    $(document).ready(function(){
+        $('.like-form').submit(function(e){//yeni her hansisa bir form submit olanda islesin jquery kodu amma bir yerde diqqetli ol fomrdaki butona hemise type olarag submit ver
+            e.preventDefault()
+            
+            const post_id = $(this).attr('id')//this yeni classi like-form olan form bu from yeni this olarag isaret olunur
+            //Burdaki yeni bu form submit olanda hansi postda butonaa basilibsa hemin postun id deyerini geri donder attr vasitesile
+
+            const likeText = $(`.like-btn${post_id}`).text()//indi ise formdan aldigimiz id ni classi .like-btn olan butonaa gonderiko yeni buton bilsinki hansi id li posta tiklayirig
+            const trim = $.trim(likeText)//yeni gelen deyeri kesirsen sagda ve ya solda bosluglar filan varsa
+            
+            const url = $(this).attr('action')//hemin formun action nunu cekdim yeni url ni
+            
+            let res;
+            const likes = $(`.like-count${post_id}`).text()//yeni hansi postun like artmalidirkir butona tiklayanda
+            const trimCount = parseInt(likes)
+
+            //Indi ise ajax yazag $.ajax({}) formasinda amma jquery vasitesile yazirig
+            $.ajax({
+                type:'POST',
+                url:url,
+                data : {
+                    "csrfmiddlewaretoken":$('input[name=csrfmiddlewaretoken]').val(),
+                    'post_id':post_id,
+                },
+
+                //Jqurydeki success ve error metodlari Js deki ajaxda yada fetch api larda daha cox fetch istifade olunru artig es6 birlikde yeni bunlarda ise gelen reponsun ugurlu olub olmamasini yoxlamag ucun .then ve .catch den istifade olunur
+                success:function(response){
+                    if(trim == 'Unlike'){
+                        $(`.like-btn${post_id}`).text('Like')
+                        res = trimCount - 1
+                    }
+                    else{//Eger buton yerindeki text Like dirsa onu Unlike et
+                        $(`.like-btn${post_id}`).text('Unlike')
+                        res = trimCount + 1
+                    }
+                    
+                    
+                },
+                error:function(err){
+                    console.log('Hata ', err)
+                }
+
+            })
+
+        })
+    })
+    </script>
+</body>
+</html>

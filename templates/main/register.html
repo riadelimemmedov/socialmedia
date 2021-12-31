@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+    <div class="row"><!-- class olarag row olanda buton div filan ferq eelmir setir formasinda olur datalar yeni hblovke elmentler kimi -->
+        <div class="col-md-6 mx-auto">
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{message.tags}}">
+                        <strong>{{message}}</strong>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <div class="card">
+                
+                <div class='card-header bg-primary text-white'>
+                    <h4 class="text-center">Register</h4>
+                </div>
+
+                <div class="card-body">
+                    <form action="{% url 'register' %}" method="POST">
+                        {% csrf_token %}
+
+                        <div class="form-group">
+                            <label for="username">Ad</label>
+                            <input type="text" name="username" class="form-control" required><!-- labeldaki for ile inputdaki name hemise beraber olmalidir yeniki label.for.value = input.name.value -->
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" name="email" class="form-control" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Sifre</label>
+                            <input type="password" name="password" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="repassword">Sifre Tekrar</label>
+                            <input type="password"  name="repassword" class="form-control" required>
+                        </div>
+
+                        <style>
+                            #amk{
+                                display: flex;
+                                justify-content: center;
+                                text-align: center;
+                            }
+
+                            #masin {
+                                display: block;
+                                color:#227093;
+                                text-align: center;
+                                text-decoration: underline;
+                                font-size: medium;
+                                
+                            }
+
+                            #rucka{
+                                display: block;
+                                text-align:center;
+                                margin-bottom: 12px;
+                            }
+                        </style>
+
+                        <div id="amk">
+                            <button type="submit" class="btn btn-outline-primary btn-lg pr-5 pl-5 mb-3">Register</button>
+                            
+                        </div>
+                        <strong id="rucka">Movcud Bir Hesabiniz Var?</strong><a href="{% url 'login' %}" id="masin">Giris Edin</a>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+
+{% endblock content %}

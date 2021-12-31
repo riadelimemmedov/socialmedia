@@ -1,0 +1,128 @@
+{% load static %}
+{% load custom_tags %}<!-- Yeni custom_tags adli python faylini html icine yukledim load acar sozu vasitesile -->
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<div class="ui inverted menu nav mb-7" style="position: relative;bottom: 17px;">
+    <div class="ui container">
+        <a href="{% url 'home' %}" class="item">
+            <h3>faceX</h3>
+        </a>
+        {% if request.user.is_authenticated %}
+        <a href="{% if 'main-post-view' in request.path %}active {% else %} {% endif %} {% url 'main-post-view' %}" class="item">
+            <h5>Postlar</h5>
+        </a>
+
+        <a href="{% url 'profile_list' %}" class="item">
+            <h5>Istifadeciler</h5>
+        </a>
+        {% endif %}
+
+        <div class="right menu">
+        {% if request.user.is_authenticated %}
+            <!-- eger istifadeci giris edibse if e gir -->
+            <!-- <div class="dropdown mt-3">
+                <div class="ui floating dropdown icon button teal dropdown-toggle amk"  id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Friends
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a href="" class="dropdown-item">
+                            All Profiles
+                        </a>
+                        <a href="" class="dropdown-item">
+                            Send Invites
+                        </a>
+                        <a href="" class="dropdown-item">
+                            Received Invites
+                        </a>
+                    </div>
+                </div>
+            </div> -->
+            {% profiller as account %}
+    
+            <!-- ?Burdaki profiller custom_tagsdan yeni @register.simple_tag(name='profiller') den gelir yeni ordaki name deyiskeninnden-->
+
+            <div class="item">
+                <div class="ui floating dropdown icon button teal" id="amk"> Dostlar
+                    <i class="dropdown icon"></i>
+                    <div class="menu">
+                        <a href="{% url 'friend' %}" class="item masin">
+                            Butun Dostlar &nbsp; <div class="ui red horizontal label">{{profile.get_friends_number}}</div><!-- !Burdaki nbsp bir html bosluglar buraxdigda problem yaratmamasi ucun istifade olunur -->
+                        </a>
+                        <a href="{% url 'postlarim' %}" class="item masin">
+                            Post Sayi &nbsp; <div class="ui red horizontal label">{{post_count}}</div>
+                        </a>
+                        <a href="{% url 'my_invites' %}" class="item masin">
+                            Gelen Istekler &nbsp; <div class="ui red horizontal label">{{say}}</div><!--Burdaki &nbsp metnler arasinda beyaz yeni ag boşlug ucun istifade olunan bir html etiketidir -->
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="item">
+                <form action="{% url 'search_profile' %}" method="GET">
+                    <div class="ui action left icon input">
+                        <input class="prompt" type="text" name='q' placeholder="name of a friend..." id='deyer'>
+                        <i class="search icon"></i>
+                        <button type='submit' class="ui button" id="tiklama">Search</button>
+                    </div>
+                </form>
+            </div>
+            
+
+            <a href="{% url 'my_profile' %}" class="item">
+                <img src="{{picture.url}}" class="ui avatar image"  alt="resim yuklenemdi">&nbsp;
+                {{ request.user }}
+            </a>
+
+            <a href="{% url 'logout' %}"class="ui item">
+                <h5>Logout</h5>
+            </a>
+
+        {% else %}
+            <a href="{% url 'login' %}" class="ui item">
+                <!-- eger giris etmeyibse Login url goster ancag-->
+                <h5>Login</h5>
+            </a>
+            
+            <a href="{% url 'register' %}" class="ui item">
+                <h5>Register</h5>
+            </a>
+
+        {% endif %}
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
+</script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+</script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
+</script>
+<script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#amk').click(function(){
+            $('.menu').show('slow')
+            if ($('.menu').show()){
+                $('.menu').mouseleave(function(){
+                    $('#amk .menu').hide('slow')
+                })
+            }
+        })
+    })
+
+
+
+    $(document).ready(function() {
+        $('#tiklama').click(function(){
+            if($('#deyer').val() == ''){    
+                alert('Search Sahesine Bir deyer girin')
+                
+            }
+        })
+    })
+
+</script>

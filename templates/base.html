@@ -1,0 +1,43 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <!--Custom css ADD HERE-->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css">
+
+    <!-- semantic UI -->
+    <link rel="stylesheet" type='text/css'
+        href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.14/semantic.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
+
+
+</head>
+
+<body>
+    {% include "main/navbar.html" %}
+    <br>
+    <div class="ui container">
+        {% block content %}
+        {% endblock content %}
+    </div>
+
+    {% block scripts %}<!-- Ajax yazilacag deyesen ona gore -->
+    {% endblock scripts %}
+
+    
+
+</body>
+
+<!--Custom js ADD HERE-->
+<footer>
+    <script src="{% static 'js/main.js' %}" type="text/javascript"></script>
+</footer>
+
+</html>

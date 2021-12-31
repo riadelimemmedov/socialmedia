@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>Profiller</title>
+</head>
+<body>
+    <!-- {% if netice.is_empty %} !eger is_emytyden true deyeri donerse if e girsin cunki if ancag sert true olanda isleyir 
+        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+        <div>
+            Profil Yoxdur Hesabda
+        </div>
+    </div>
+    {% endif %} -->
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{message.tags}}">
+                <strong>{{message}}</strong>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    {% if netice %}
+    {% for obj in netice %}
+        <div class="ui segment">
+            <div class="ui grid">
+                <div class="row">
+                    <div class="three wide column" style="padding: 28px;">
+                        <img class="ui small circular image" src="{{obj.avatar.url}}" alt="resim bulunamadi">
+                    </div>
+                    <div class="thirteen wide column">
+                        <h3>{{obj.user}}</h3>
+                        <p>{{obj.bio|safe|truncatewords:10}}</p>
+                        <a href="{{obj.get_absolute_url}}"><button class="ui primary button mb-3 w-big">Profili Gor</button></a>
+                        <br>
+
+                        {% if obj.user not in gonderdiyim_istek and obj.user not in gelen_istek %}
+                            <form action="{% url 'send_invite' %}" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="profile_pk" value={{obj.pk}}>
+                                <button type="submit" class="ui positive basic button mb-5 w-big"><i class="plus square icon"></i>Arkadaslik Ekle</button>
+                            </form>
+                        {% endif %}
+
+                        {% if obj.user in gonderdiyim_istek and request.user not in obj.friends.all %}
+                            <button class="ui disabled button mb-5 w-big"><i class="user icon"></i>Dostlug Gozlemede</button>
+                        {% endif %}
+                        
+                        {% if request.user in obj.friends.all %}<!-- Yeni hal hazirdaki istifadeci ile obj nesnesindeki istifadeci dostdurlar  --->
+                            <form action="{% url 'remove_friend' %}" method="POST"><!-- obj.frineds.all bir liste donderir request.user yeni giris eden istifadecinin o listede olub olmamagini bu cur yoxlanir -->
+                                {% csrf_token %}
+                                <input type="hidden" name="dostadi" value={{obj.pk}}>
+                                <button type="submit" class="ui negative basic button mb-5 w-big"><i class="minus square icon"></i>Dostlugdan  Çıxar</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+    {% else %}
+        <div class="alert alert-danger alert-dismissible fade show">
+            <strong class="lead">Axtarisa uygun bir <span class="font-weight-bold" style="text-decoration: underline;">profil</span> tapilmadi</strong>
+            <button type="button" class="close"><!-- data-dissmiss sayesinde bu butona tiklayanda yuxardaki div gorunmez olacag amma biz her hansi bir seyfeye yonlendirmek isteyirik ona gore data-dissmisden istifade etmektik -->
+                <a href="{% url 'home' %}"><span>&times</span></a>
+            </button>
+        </div>
+    {% endif %}
+
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+
+<!-- <script>
+    $(document).ready(function() {
+        $('#amk').click(function(){
+            $('#masin').hide()
+        })
+    })
+</script> -->
+
+</html>
+{% endblock content %}

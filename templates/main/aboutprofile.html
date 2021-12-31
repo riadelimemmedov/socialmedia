@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+<div class="ui grid">
+    <br>
+    <div class="row">
+        <div class="four wide column">
+            <img class="ui medium rounded image" src="{{profile.avatar.url}}" alt="resim yuklenemedi">
+            <h1>{{profile.user}}</h1>
+            <div class="ui vertical fluid menu">
+
+                <div class="item">
+                    Posts
+                    <div class="ui label">{{profile.post_count}}</div>
+                </div>
+                <div class="item">
+                    Verilen Like
+                    <div class="ui label">{{profile.likes_count}}</div>
+                </div>
+                <div class="item">
+                    Alinan Like
+                    <div class="ui label">{{profile.get_likes_recived}}</div>
+                </div>
+                <div class="item">
+                    Dostlar
+                    <div class="ui label">{{profile.get_friends_number}}</div>
+                </div>
+            </div>
+            {% if request.user not in gonderdiyim_istek and request.user not in gelen_istek %}
+            <form action="{% url 'send_invite' %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="profile_pk" value={{profile.pk}}>
+                <button type="submit" class="ui positive basic button mb-5 w-big" id="addfriend"><i
+                        class="plus square icon"></i>Arkadaslik Ekle</button>
+            </form>
+            {% endif %}
+
+            {% if profile.user in gonderdiyim_istek and request.user not in profile.friends.all %}
+            <button class="ui disabled button mb-5 w-big" id='gozle'><i class="user icon"></i>Dostlug Gozlemede</button>
+            {% endif %}
+
+            {% if request.user in profile.friends.all %}
+            <!-- Yeni hal hazirdaki istifadeci ile profile nesnesindeki istifadeci dostdurlar  --->
+            <form action="{% url 'remove_friend' %}" method="POST">
+                <!-- profile.frineds.all bir liste donderir request.user yeni giris eden istifadecinin o listede olub olmamagini bu cur yoxlanir -->
+                {% csrf_token %}
+                <input type="hidden" name="dostadi" value={{profile.pk}}>
+                <button type="submit" class="ui negative basic button mb-5 w-big"><i
+                        class="minus square icon"></i>Dostlugdan Çıxar</button>
+            </form>
+            {% endif %}
+        </div>
+        <div class="twelve wide column"><!-- ?Postun olub olmaagini yoxlamag ucun birinci if sonra for yazilir hemise mesajlardada beledir eger mesahin olub olmadigni yoxlamag isteyirnsese hemise birinci if e girsin eger if dogrudursa for a gir indide bele yazaciyig onsuz yadda saxla if hemise true olanda isleyir else ise en son carede isleyir -->
+            {% if posts %}
+                {% for j in posts %}
+                    <div class="segment ui fluid">
+                        {{j.content|safe|truncatewords:50}}
+                        <a style="padding-left: 10px; color:#e74c3c;font-size: bold;" href="{% url 'detail' j.id %}">Davamini Oxu</a>
+                    </div>
+                {% endfor %}
+            {% else %}
+                    {% include "alert2.html" %}
+            {% endif%}
+            
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+
+
+{% endblock content %}

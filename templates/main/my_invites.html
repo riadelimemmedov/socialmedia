@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dostlug Istekleri</title>
+</head>
+
+<body>
+    {% if is_empty %}
+    <!-- eger is_empty contextindan donen deyer true dursa if e gir cunki if ancag true olanda isleyir -->
+        {% include "alert.html" %}
+    {% endif %}
+
+    {% for obj in qs %}
+    <div class="ui segment">
+        <div class="ui grid">
+            <div class="row">
+                <div class="three wide column" style="padding: 30px;">
+                    <img class="ui small circular image" src="{{obj.avatar.url}}" alt="">
+                </div>
+                <div class="thirteen wide column">
+                    <h3>{{obj.user}}</h3>
+                    <p>{{obj.bio}}</p>
+                    <br>
+                    <a href="#">
+                        <button class="ui primary button w-big mb-3">Profili Gor</button>
+                    </a>
+
+                    <!-- !Isteyi Qebul Etme Formu her hansi bir id li yeni pk bir istifadeciden gelen isteyi qebul etme yeni -->
+                    
+                    <!--Istedyi Qebul etme formu -->
+                    <form action="{% url 'accept_friend' %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="profile_pk" value={{obj.pk}}>
+                        <button type="submit" class="ui positive basic button w-big mb-3">
+                            <i class="check icon"></i>
+                            Isteyi Qebul Et
+                        </button>
+                    </form>
+
+                    <!-- !Her hasni bir istfiadeciden gelen istediyi redd etme formu id li istifadeci kimi qeyd olunur ve inputdan gondeirlir id o terefe yeni vieww-->
+                    <!--Istedyi redd etme formu-->
+                    <form action="{% url 'reject_invitation' %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="profil_id" value="{{obj.pk}}">
+                        <button type="submit" class="ui negative basic button w-big mb-5">
+                            <i class="close icon"></i>
+                            Isteyi Redd Et
+                        </button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+</body>
+<script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+
+</html>
+{% endblock content %}

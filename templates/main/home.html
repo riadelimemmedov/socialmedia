@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+
+</head>
+<body>
+    <div class="container">
+        <div class="row ">
+            <div class="card w-50   mx-auto">
+                <div class="card-body text-center">
+                    <div class="card-text">
+                        <p class="lead">Xos Geldiniz</p>
+                        <hr>
+                        <strong>
+                            Eger bir hesabiniz yoxdursa Qeydiyyatdan kecin-
+                            <a href="{% url 'register' %}" target="_blank" class="link-primary" style="text-decoration:underline">Qeydiyyat</a>
+                        </strong>
+                        <br><br>
+                        <strong class="d-block text-dark">Ve ya-
+                            <a href="{% url 'login' %}" target="_blank" class="link-primary" style="text-decoration:underline">Giris</a>
+                        </strong>
+                    </div>
+                </div>
+                <div class="card-footer text-start">
+                    <strong>Yazilan Postlar: 
+                            <a href="{% url 'main-post-view' %}" class="link-primary d-inline" style="text-decoration:underline">Postlar</a>
+                    </strong>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a href="{% url 'create_tag' %}">dadas</a>
+    
+</body>
+
+<footer>
+    
+    {% block scripts %}
+        <script>
+            $(document).ready(function(){
+                console.log('Calisiyor')
+            })
+        </script>
+    {% endblock scripts %}
+
+</footer>
+<script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+
+
+</html>
+{% endblock content %}

@@ -1,0 +1,349 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">
+
+    <title>Detail Friend</title>
+</head>
+
+<style>
+    body{
+        background: -webkit-linear-gradient(left, #3931af, #00c6ff);
+    }
+    .emp-profile{
+        padding: 3%;
+        margin-top: 3%;
+        margin-bottom: 3%;
+        border-radius: 0.5rem;
+        background: #fff;
+    }
+    .profile-img{
+        text-align: center;
+    }
+    .profile-img img{
+        width: 70%;
+        height: 100%;
+    }
+    .profile-img .file {
+        position: relative;
+        overflow: hidden;
+        margin-top: -20%;
+        width: 70%;
+        border: none;
+        border-radius: 0;
+        font-size: 15px;
+        background: #212529b8;
+    }
+    .profile-img .file input {
+        position: absolute;
+        opacity: 0;
+        right: 0;
+        top: 0;
+    }
+    .profile-head h5{
+        color: #333;
+    }
+    .profile-head h6{
+        color: #0062cc;
+    }
+    .profile-edit-btn{
+        border: none;
+        border-radius: 1.5rem;
+        width: 70%;
+        padding: 2%;
+        font-weight: 600;
+        color: #6c757d;
+        cursor: pointer;
+    }
+    .proile-rating{
+        font-size: 12px;
+        color: #818182;
+        margin-top: 5%;
+    }
+    .proile-rating span{
+        color: #495057;
+        font-size: 15px;
+        font-weight: 600;
+    }
+    .profile-head .nav-tabs{
+        margin-bottom:5%;
+    }
+    .profile-head .nav-tabs .nav-link{
+        font-weight:600;
+        border: none;
+    }
+    .profile-head .nav-tabs .nav-link.active{
+        border: none;
+        border-bottom:2px solid #0062cc;
+    }
+    .profile-work{
+        padding: 14%;
+        margin-top: -15%;
+    }
+    .profile-work p{
+        font-size: 12px;
+        color: #818182;
+        font-weight: 600;
+        margin-top: 10%;
+    }
+    .profile-work a{
+        text-decoration: none;
+        color: #495057;
+        font-weight: 600;
+        font-size: 14px;
+    }
+    .profile-work ul{
+        list-style: none;
+    }
+    .profile-tab label{
+        font-weight: 600;
+    }
+    .profile-tab p{
+        font-weight: 600;
+        color: #0062cc;
+    }
+
+    #alma:hover{
+        background-color: #2d3436 !important;
+    }
+</style>
+
+<body>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!------ Include the above in your HEAD tag ---------->
+
+
+    <div class="container emp-profile">
+        <form method="post">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="profile-img">
+                        <img src="{{profile.avatar.url}}"
+                            alt="" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="profile-head">
+                        <h5>
+                            {{profile.first_name}}
+                        </h5>
+                        <h6>
+                            {{profile.bio|safe}}
+                        </h6>
+
+                        <!-- {% if profile.gender.Gen == 'Kisi' %}
+                            <p class="proile-rating">Gender : <span>Kisi</span></p>
+                        {% elif profile.gender == 'Kadin'%}
+                            <p class="proile-rating">Gender : <span>Kadin</span></p>
+                        {% endif %}
+            -->
+                        
+                {% if profile.gender == 'Kisi' %}
+                    <p>{{profile2}}</p>
+                {% elif profile.gender == 'Kadin' %}
+                    <p>{{profile3}}</p>
+                {% elif profile.gender == 'Yeniyetme' %}
+                    <p>{{profile4}}</p>
+                {% endif %}
+
+                        <style>
+                            .amk:hover{
+                                color: black;
+                                background-color: #2d3436 !important;
+                                color: #fff !important;
+                                transition: all 0.3s;
+                            }
+                            .amk{
+                                color: black;
+                                border-radius: 5px !important;
+                            }
+
+                            .aq{
+                                padding-left: 3px !important;
+                            }
+                        </style>
+
+                        <ul class="nav nav-tabs aq" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active amk" id="home-tab" data-toggle="tab" href="{% url 'detaildost' profile.id %}" role="tab"
+                                    aria-controls="home" aria-selected="true">About</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <style>
+                    #nese{
+                        background-color: #718093;
+                        color: #fff;
+                    }
+
+                    #nese:hover{
+                        background-color: #2f3640;
+                        transition: background-color 0.2s;
+                    }
+                </style>
+
+                <div class="col-md-2">
+                
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="profile-work">
+                        <p style="background-color: #2C3A47 ;width: 50%; border-radius: 5px; padding:5px;text-align: left;outline: none;color: #fff;">Social Link</p>
+                        <a href="{{profile.linkedin_hesabi}}">LinkEdin    <i class="fab fa-linkedin-in"></i></a><br/>
+                        <a href="{{profile.instaqram_hesabi}}">Instaqram  <i class="fab fa-instagram"></i></a><br />
+                        <a href="{{profile.twitter_hesabi}}">Twitter      <i class="fab fa-twitter"></i></a>
+                        
+                        <hr>
+                        <style>
+            
+                        </style>
+                        <p style="background-color: #2C3A47 ;width: 50%; border-radius: 5px; padding:5px;text-align: left;outline: none;color: #fff;">My Data</p>
+                        Country - <strong>{{profile.country}}</strong><br>
+                        YearOfBirth - <strong>{{profile.doguldugu_il}}</strong><br>
+                        Entered Year - <strong>{{profile.created|date:"F d,Y"}}</strong>
+
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="tab-content profile-tab" id="myTabContent">
+                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Istifadeci Id</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{profile.id}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Ad</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{profile.user.username}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Email</label>
+                                </div>
+                                <div class="col-md-6">
+                                    {% if profile.email %}<!-- yeni eger mail varsa maili gostersin olmasa elses girer sonrada sonda endif yazmagi unutma-->
+                                        <p>{{profile.email}}</p>
+                                    {% else %}
+                                        <p>-</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Universitet ve ya Mekteb</label>
+                                </div>
+                                <div class="col-md-6">
+                                    {% if profile.oxudugu_yer %}<!-- Yeni eger oxudugu yer varsa if girsin olmasa else girsin ve sonda endif yazmagi unutma -->
+                                        <p>{{profile.oxudugu_yer}}</p>
+                                    {% else %}
+                                        <p>-</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Ixtisas</label>
+                                </div>
+                                <div class="col-md-6">
+                                    {% if profile.ixtisas %}
+                                        <p>{{profile.ixtisas}}</p>
+                                    {% else %}
+                                        <p>-</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Tecrube Seviyyesi</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>Expert</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Hourly Rate</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>10$/hr</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Total Projects</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>230</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>English Level</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>Expert</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Availability</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>6 months</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label>Your Bio</label><br />
+                                    <p>Your detail description</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
+    </script>
+<script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+
+</body>
+
+</html>
+
+{% endblock content %}
